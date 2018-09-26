@@ -1,4 +1,4 @@
-package hello;
+package com.rob.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
