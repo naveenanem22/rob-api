@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.rob.custom.exceptions.CandidateNotFoundException;
+import com.rob.custom.exceptions.RecordNotFoundException;
 import com.rob.model.Candidate;
 
 @Repository(value = "candidateDaoImpl")
@@ -34,10 +34,13 @@ public class CandidateDaoImpl implements CandidateDao {
 		paramMap.put("cdt_id", candidateId);
 
 		List<Candidate> candidates = namedParameterJdbcTemplate.query(sql, paramMap, new CandidateRowMapper());
-		if(candidates.isEmpty())
-			throw new CandidateNotFoundException("Candidate with id:"+candidateId+" not found.");
-		else if(candidates.size()==1)
+		// if no candidates found
+		if (candidates.isEmpty())
+			throw new RecordNotFoundException("Candidate with id:" + candidateId + " not found.");
+		// if only one candidate found
+		else if (candidates.size() == 1)
 			return candidates.get(0);
+		// if more than one candidate found or any other unintentional flow occurs
 		else
 			throw new RuntimeException();
 
