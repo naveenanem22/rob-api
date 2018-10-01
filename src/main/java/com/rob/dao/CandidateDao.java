@@ -1,8 +1,8 @@
-package com.rob.service;
+package com.rob.dao;
 
 import com.rob.model.Candidate;
 
-public interface CandidateService {
+public interface CandidateDao {
 	
 	Candidate getCandidateById(String candidateId);
 	boolean createCandidate(Candidate candidate);

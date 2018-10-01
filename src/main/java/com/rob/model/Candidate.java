@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -12,19 +14,34 @@ import com.rob.common.JsonDateDeserializer;
 import com.rob.common.JsonDateSerializer;
 
 public class Candidate {
-
+	
+	@JsonProperty(value = "id")
 	private String id;
+	
+	@JsonProperty(value = "firstName")
+	@Size(min=2, message="Name should have atleast 2 characters")
 	private String firstName;
+	
+	@JsonProperty(value = "lastName")
 	private String lastName;
+	
+	@JsonProperty(value = "passportNumber")
 	private String passportNumber;
+	
+	@JsonProperty(value = "email")
 	private String email;
+	
+	@JsonProperty(value = "lastDesignation")
 	private String lastDesignation;
 
 	@JsonProperty(value = "dob")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate dateOfBirth;
-
+	
+	@JsonProperty(value = "gender")
 	private String gender;
+	
+	@JsonProperty(value = "maritalStatus")
 	private String maritalStatus;
 
 	@JsonProperty(value = "createdDate")
@@ -123,6 +140,11 @@ public class Candidate {
 
 	public void setUpdatedDate(LocalDateTime updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+	
+	@Override
+	public String toString(){
+		return id+", "+firstName+", "+lastName;		
 	}
 
 }

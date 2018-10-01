@@ -1,7 +1,7 @@
 package com.rob.unittests;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import java.time.Month;
 
 import org.junit.Test;
@@ -50,10 +50,9 @@ public class CandidateControllerTest {
 		candidate.setLastDesignation("Technical Lead");
 		candidate.setPassportNumber("J2940263");
 		candidate.setMaritalStatus("Married");
-		candidate.setDateOfBirth(LocalDate.of(1985, Month.AUGUST, 21));		
-		
-		
-		Mockito.when(candidateService.getCandidate(Mockito.anyString())).thenReturn(candidate);
+		candidate.setDateOfBirth(LocalDate.of(1985, Month.AUGUST, 21));
+
+		Mockito.when(candidateService.getCandidateById(Mockito.anyString())).thenReturn(candidate);
 
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/candidates/KH2475")
 				.accept(MediaType.APPLICATION_JSON);
