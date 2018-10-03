@@ -24,12 +24,12 @@ public class Candidate {
 	private String firstName;
 
 	@JsonProperty(value = "lastName")
-	@Size(min = 2, message = "Last Name should not be empty.")
+	@Size(min = 1, message = "Last Name should not be empty.")
 	private String lastName;
 
 	@JsonProperty(value = "passportNumber")
 	@NotNull(message = "Passport number is mandatory.")
-	@Size(min = 2, message = "Passport number should not be empty.")
+	@Size(min = 1, message = "Passport number should not be empty.")
 	private String passportNumber;
 
 	@JsonProperty(value = "email")
