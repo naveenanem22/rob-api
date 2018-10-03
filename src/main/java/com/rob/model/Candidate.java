@@ -7,12 +7,16 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rob.common.JsonDateDeserializer;
 import com.rob.common.JsonDateSerializer;
+import com.rob.custom.validators.GenderConstraint;
 
 public class Candidate {
 
@@ -40,12 +44,13 @@ public class Candidate {
 
 	@JsonProperty(value = "dob")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	@NotNull(message = "Date of birth is mandatory.")	
+	@NotNull(message = "Date of birth is mandatory.")
 	private LocalDate dateOfBirth;
 
 	@JsonProperty(value = "gender")
 	@NotNull(message = "Gender is mandatory.")
 	@Size(min = 1, message = "Gender cannot be blank.")
+	@GenderConstraint(message = "Gender must be either Male Or Female")
 	private String gender;
 
 	@JsonProperty(value = "maritalStatus")
