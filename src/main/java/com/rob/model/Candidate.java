@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -24,7 +25,7 @@ public class Candidate {
 	private String id;
 
 	@JsonProperty(value = "firstName")
-	@Size(min = 2, message = "First Name should not be empty.")
+	@Size(min = 1, message = "First Name should not be empty.")
 	private String firstName;
 
 	@JsonProperty(value = "lastName")
@@ -37,6 +38,9 @@ public class Candidate {
 	private String passportNumber;
 
 	@JsonProperty(value = "email")
+	@NotNull(message = "Email is mandatory.")
+	@Size(min = 1, message = "Email cannot be blank.")
+	@Email(message = "Invalid email.")
 	private String email;
 
 	@JsonProperty(value = "lastDesignation")
@@ -50,7 +54,7 @@ public class Candidate {
 	@JsonProperty(value = "gender")
 	@NotNull(message = "Gender is mandatory.")
 	@Size(min = 1, message = "Gender cannot be blank.")
-	@GenderConstraint(message = "Gender must be either Male Or Female")
+	@GenderConstraint(message = "Gender must be either Male Or Female.")
 	private String gender;
 
 	@JsonProperty(value = "maritalStatus")
