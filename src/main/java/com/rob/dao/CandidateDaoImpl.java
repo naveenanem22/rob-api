@@ -70,10 +70,7 @@ public class CandidateDaoImpl implements CandidateDao {
 		paramMap.put("cdt_created_date", candidate.getCreatedDate());
 		paramMap.put("cdt_updated_date", candidate.getUpdatedDate());
 
-		if (namedParameterJdbcTemplate.update(sql.toString(), paramMap) == 1)
-			return true;
-		else
-			throw new RuntimeException("Error creating Candidate.");
+		return namedParameterJdbcTemplate.update(sql.toString(), paramMap) == 1;
 
 	}
 
@@ -98,10 +95,17 @@ public class CandidateDaoImpl implements CandidateDao {
 		paramMap.put("cdt_marital_status", candidate.getMaritalStatus());
 		paramMap.put("cdt_updated_date", candidate.getUpdatedDate());
 
-		if (namedParameterJdbcTemplate.update(sql.toString(), paramMap) == 1)
-			return true;
-		else
-			throw new RuntimeException("Error updating Candidate.");
+		return namedParameterJdbcTemplate.update(sql.toString(), paramMap) == 1;
+
+	}
+
+	@Override
+	public boolean deleteCandidate(String candidateId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("DELETE FROM candidate WHERE cdt_id = :cdt_id");
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("cdt_id", candidateId);
+		return namedParameterJdbcTemplate.update(sql.toString(), paramMap) == 1;
 
 	}
 
