@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -14,34 +15,42 @@ import com.rob.common.JsonDateDeserializer;
 import com.rob.common.JsonDateSerializer;
 
 public class Candidate {
-	
+
 	@JsonProperty(value = "id")
 	private String id;
-	
+
 	@JsonProperty(value = "firstName")
-	@Size(min=2, message="Name should have atleast 2 characters")
+	@Size(min = 2, message = "First Name should not be empty.")
 	private String firstName;
-	
+
 	@JsonProperty(value = "lastName")
+	@Size(min = 2, message = "Last Name should not be empty.")
 	private String lastName;
-	
+
 	@JsonProperty(value = "passportNumber")
+	@NotNull(message = "Passport number is mandatory.")
+	@Size(min = 2, message = "Passport number should not be empty.")
 	private String passportNumber;
-	
+
 	@JsonProperty(value = "email")
 	private String email;
-	
+
 	@JsonProperty(value = "lastDesignation")
 	private String lastDesignation;
 
 	@JsonProperty(value = "dob")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@NotNull(message = "Date of birth is mandatory.")	
 	private LocalDate dateOfBirth;
-	
+
 	@JsonProperty(value = "gender")
+	@NotNull(message = "Gender is mandatory.")
+	@Size(min = 1, message = "Gender cannot be blank.")
 	private String gender;
-	
+
 	@JsonProperty(value = "maritalStatus")
+	@NotNull(message = "Marital status is mandatory.")
+	@Size(min = 1, message = "Marital status cannot be blank.")
 	private String maritalStatus;
 
 	@JsonProperty(value = "createdDate")
@@ -141,10 +150,10 @@ public class Candidate {
 	public void setUpdatedDate(LocalDateTime updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-	
+
 	@Override
-	public String toString(){
-		return id+", "+firstName+", "+lastName;		
+	public String toString() {
+		return id + ", " + firstName + ", " + lastName;
 	}
 
 }
