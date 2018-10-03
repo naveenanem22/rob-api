@@ -52,10 +52,28 @@ public class CandidateDaoImpl implements CandidateDao {
 		LOGGER.debug("Candidate: " + candidate.toString());
 
 		StringBuilder sql = new StringBuilder();
+		sql.append("INSERT INTO ");
 		sql.append(
-				"INSERT into candidate values('CDT002', 'Kailash', 'Krishna', 'kk@kony.com', 'JJ225565', 'Technical Lead', '1986-10-10', 'Male', 'Married', '2018-06-15 14:41:59', '2018-07-21 13:47:48')");
+				"candidate (cdt_id, cdt_first_name, cdt_last_name, cdt_email, cdt_passport, cdt_last_designation, cdt_date_of_birth, cdt_gender, cdt_marital_status, cdt_created_date, cdt_updated_date) ");
+		sql.append(
+				"values(:cdt_id, :cdt_first_name, :cdt_last_name, :cdt_email, :cdt_passport, :cdt_last_designation, :cdt_date_of_birth, :cdt_gender, :cdt_marital_status, :cdt_created_date, :cdt_updated_date)");
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		return namedParameterJdbcTemplate.update(sql.toString(), paramMap) == 1;
+		paramMap.put("cdt_id", candidate.getId());
+		paramMap.put("cdt_first_name", candidate.getFirstName());
+		paramMap.put("cdt_last_name", candidate.getLastName());
+		paramMap.put("cdt_email", candidate.getEmail());
+		paramMap.put("cdt_passport", candidate.getPassportNumber());
+		paramMap.put("cdt_last_designation", candidate.getLastDesignation());
+		paramMap.put("cdt_date_of_birth", candidate.getDateOfBirth());
+		paramMap.put("cdt_gender", candidate.getGender());
+		paramMap.put("cdt_marital_status", candidate.getMaritalStatus());
+		paramMap.put("cdt_created_date", candidate.getCreatedDate());
+		paramMap.put("cdt_updated_date", candidate.getUpdatedDate());
+
+		if (namedParameterJdbcTemplate.update(sql.toString(), paramMap) == 1)
+			return true;
+		else
+			throw new RuntimeException("Error creating Candidate.");
 
 	}
 

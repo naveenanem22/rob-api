@@ -1,5 +1,6 @@
 package com.rob.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.rob.model.Candidate;
 import com.rob.service.CandidateService;
@@ -43,9 +46,12 @@ public class CandidateController {
 	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public String createCandidate(@Valid @RequestBody Candidate candidate) {
+	public ResponseEntity<Object> createCandidate(@Valid @RequestBody Candidate candidate) {
+		
 		candidateService.createCandidate(candidate);
-		return "Candidate created successfully.";
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(candidate.getId()).toUri();
+		return ResponseEntity.created(location).build();
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
