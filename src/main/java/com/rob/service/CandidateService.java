@@ -6,5 +6,7 @@ public interface CandidateService {
 	
 	Candidate getCandidateById(String candidateId);
 	boolean createCandidate(Candidate candidate);
+	boolean updateCandidate(Candidate candidate);
+	
 
 }

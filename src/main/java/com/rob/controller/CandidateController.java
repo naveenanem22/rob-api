@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,16 +48,25 @@ public class CandidateController {
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> createCandidate(@Valid @RequestBody Candidate candidate) {
-		
+
 		candidateService.createCandidate(candidate);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(candidate.getId()).toUri();
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(candidate.getId())
+				.toUri();
 		return ResponseEntity.created(location).build();
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Candidate> listCandidates() {
 		return null;
+	}
+
+	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, path = "/{id}")
+	public ResponseEntity<Object> updateCandidate(@Valid @RequestBody Candidate candidate,
+			@PathVariable("id") String candidateId) {
+		candidate.setId(candidateId);
+		candidateService.updateCandidate(candidate);
+
+		return ResponseEntity.noContent().build();
 	}
 
 }

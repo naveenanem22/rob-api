@@ -77,6 +77,34 @@ public class CandidateDaoImpl implements CandidateDao {
 
 	}
 
+	@Override
+	public boolean updateCandidate(Candidate candidate) {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("UPDATE candidate ");
+		sql.append(
+				"SET cdt_first_name= :cdt_first_name, cdt_last_name= :cdt_last_name, cdt_email= :cdt_email, cdt_passport= :cdt_passport, cdt_last_designation= :cdt_last_designation, cdt_date_of_birth= :cdt_date_of_birth, cdt_gender= :cdt_gender, cdt_marital_status= :cdt_marital_status, cdt_updated_date= :cdt_updated_date ");
+		sql.append("WHERE cdt_id = :cdt_id");
+
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("cdt_id", candidate.getId());
+		paramMap.put("cdt_first_name", candidate.getFirstName());
+		paramMap.put("cdt_last_name", candidate.getLastName());
+		paramMap.put("cdt_email", candidate.getEmail());
+		paramMap.put("cdt_passport", candidate.getPassportNumber());
+		paramMap.put("cdt_last_designation", candidate.getLastDesignation());
+		paramMap.put("cdt_date_of_birth", candidate.getDateOfBirth());
+		paramMap.put("cdt_gender", candidate.getGender());
+		paramMap.put("cdt_marital_status", candidate.getMaritalStatus());
+		paramMap.put("cdt_updated_date", candidate.getUpdatedDate());
+
+		if (namedParameterJdbcTemplate.update(sql.toString(), paramMap) == 1)
+			return true;
+		else
+			throw new RuntimeException("Error updating Candidate.");
+
+	}
+
 	private static final class CandidateRowMapper implements RowMapper<Candidate> {
 
 		@Override

@@ -25,5 +25,10 @@ public class CandidateServiceImpl implements CandidateService {
 	public boolean createCandidate(Candidate candidate) {
 		return candidateDao.createCandidate(candidate);		
 	}
+	
+	@Override
+	public boolean updateCandidate(Candidate candidate) {
+		return candidateDao.updateCandidate(candidate);
+	}
 
 }
