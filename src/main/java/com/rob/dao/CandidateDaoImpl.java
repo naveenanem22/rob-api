@@ -100,7 +100,7 @@ public class CandidateDaoImpl implements CandidateDao {
 	}
 
 	@Override
-	public boolean deleteCandidate(String candidateId) {
+	public boolean deleteCandidateById(String candidateId) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("DELETE FROM candidate WHERE cdt_id = :cdt_id");
 		Map<String, Object> paramMap = new HashMap<String, Object>();

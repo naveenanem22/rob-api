@@ -7,6 +7,6 @@ public interface CandidateDao {
 	Candidate getCandidateById(String candidateId);
 	boolean createCandidate(Candidate candidate);
 	boolean updateCandidate(Candidate candidate);
-	boolean deleteCandidate(String candidateId);
+	boolean deleteCandidateById(String candidateId);
 
 }

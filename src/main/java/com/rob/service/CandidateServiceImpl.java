@@ -22,18 +22,21 @@ public class CandidateServiceImpl implements CandidateService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public boolean createCandidate(Candidate candidate) {
 		return candidateDao.createCandidate(candidate);		
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public boolean updateCandidate(Candidate candidate) {
 		return candidateDao.updateCandidate(candidate);
 	}
 	
 	@Override
-	public boolean deleteCandidate(String candidateId) {
-		return candidateDao.deleteCandidate(candidateId);
+	@Transactional(readOnly = true)
+	public boolean deleteCandidateById(String candidateId) {
+		return candidateDao.deleteCandidateById(candidateId);
 	}
 
 }

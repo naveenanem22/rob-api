@@ -72,7 +72,7 @@ public class CandidateController {
 	
 	@DeleteMapping(path = "/{id}")
 	public void deleteCandidate(@PathVariable("id") String candidateId) {
-		candidateService.deleteCandidate(candidateId);
+		candidateService.deleteCandidateById(candidateId);
 	}
 
 }
