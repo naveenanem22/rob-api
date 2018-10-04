@@ -72,6 +72,10 @@ public class Candidate {
 	@JsonSerialize(using = JsonDateSerializer.class)
 	private LocalDateTime updatedDate;
 
+	public Candidate() {
+
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -145,7 +149,7 @@ public class Candidate {
 	}
 
 	public LocalDateTime getCreatedDate() {
-		return LocalDateTime.now();
+		return this.createdDate;
 	}
 
 	public void setCreatedDate(LocalDateTime createdDate) {
@@ -153,7 +157,7 @@ public class Candidate {
 	}
 
 	public LocalDateTime getUpdatedDate() {
-		return LocalDateTime.now();
+		return this.updatedDate;
 	}
 
 	public void setUpdatedDate(LocalDateTime updatedDate) {

@@ -2,6 +2,7 @@ package com.rob.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,10 @@ public class CandidateDaoImpl implements CandidateDao {
 	@Override
 	public boolean createCandidate(Candidate candidate) {
 
+		// Creating auditing information for candidate
+		candidate.setCreatedDate(LocalDateTime.now());
+		candidate.setUpdatedDate(LocalDateTime.now());
+
 		LOGGER.debug("Candidate: " + candidate.toString());
 
 		StringBuilder sql = new StringBuilder();
@@ -76,6 +81,8 @@ public class CandidateDaoImpl implements CandidateDao {
 
 	@Override
 	public boolean updateCandidate(Candidate candidate) {
+		// Creating auditing information for candidate
+		candidate.setUpdatedDate(LocalDateTime.now());
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("UPDATE candidate ");
