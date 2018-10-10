@@ -2,11 +2,14 @@ package com.rob.model;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CandidateEducation {
 
-	@JsonProperty(value = "qualificationName")	
+	@JsonProperty(value = "qualificationName")
+	@Size(min = 1, message = "Qualificatoin Name cannot be blank.")
 	private String qualName;
 
 	@JsonProperty(value = "specialization")
@@ -19,9 +22,11 @@ public class CandidateEducation {
 	private LocalDate qualEndDate;
 
 	@JsonProperty(value = "score")
+
 	private float score;
 
 	@JsonProperty(value = "scoreType")
+
 	private String scoreType;
 
 	@JsonProperty(value = "institution")

@@ -3,6 +3,12 @@ package com.rob.custom.exceptionhandlers;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -40,19 +46,38 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		ApiErrorWithDetails apiError = new ApiErrorWithDetails();
+		ApiErrorWithDetails apiErrorWithDetails = new ApiErrorWithDetails();
 		List<ApiErrorWithDetails.Detail> details = new ArrayList<ApiErrorWithDetails.Detail>();
 
 		for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-			ApiErrorWithDetails.Detail detail = apiError.new Detail(
+			ApiErrorWithDetails.Detail detail = apiErrorWithDetails.new Detail(
 					error.getRejectedValue() == null ? FIELD_MISSING : error.getRejectedValue().toString(),
 					error.getDefaultMessage(), error.getField());
 			details.add(detail);
 		}
-		apiError.setDetails(details);
-		apiError.setMessage(VALIDATION_FAILURE);
-		apiError.setTimestamp(LocalDateTime.now());
-		return new ResponseEntity<Object>(apiError, HttpStatus.BAD_REQUEST);
+		apiErrorWithDetails.setDetails(details);
+		apiErrorWithDetails.setMessage(VALIDATION_FAILURE);
+		apiErrorWithDetails.setTimestamp(LocalDateTime.now());
+		return new ResponseEntity<Object>(apiErrorWithDetails, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
+		ApiErrorWithDetails apiErrorWithDetails = new ApiErrorWithDetails();
+		List<ApiErrorWithDetails.Detail> details = ex.getConstraintViolations().stream().map(constraintViolation -> {
+			ApiErrorWithDetails.Detail detail = apiErrorWithDetails.new Detail(
+					constraintViolation.getInvalidValue().toString(), constraintViolation.getMessage(),
+					StreamSupport.stream(constraintViolation.getPropertyPath().spliterator(), false)
+							.map(Path.Node::getName).reduce((first, second) -> second)
+							.orElseGet(() -> constraintViolation.getPropertyPath().toString()));
+			return detail;
+		}).collect(Collectors.toList());
+		apiErrorWithDetails.setDetails(details);
+		apiErrorWithDetails.setMessage(VALIDATION_FAILURE);
+		apiErrorWithDetails.setTimestamp(LocalDateTime.now());
+
+		return new ResponseEntity<Object>(apiErrorWithDetails, HttpStatus.BAD_REQUEST);
+
 	}
 
 	@Override

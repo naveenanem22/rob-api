@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,8 @@ import com.rob.service.CandidateEducationService;
 
 @RestController(value = "candidateEducationController")
 @RequestMapping("/candidates/{id}/qualifications")
+
+@Validated
 public class CandidateEducationController {
 
 	@Autowired
@@ -25,8 +28,8 @@ public class CandidateEducationController {
 	private CandidateEducationService candidateEducationService;
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void updateCandidateEducations(@PathVariable("id") String candidateId,
-			@Valid @RequestBody List<CandidateEducation> candidateEducations) {
+	public void updateCandidateEducations(@Valid @RequestBody List<CandidateEducation> candidateEducations,
+			@PathVariable("id") String candidateId) {
 
 		candidateEducationService.updateCandidateEducations(candidateId, candidateEducations);
 
