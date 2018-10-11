@@ -61,33 +61,6 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 
 		namedParameterJdbcTemplate.batchUpdate(sql.toString(),
 				batchValues.toArray(new Map[candidateEducations.size()]));
-		/*
-		 * Map<String, Object> paramMap1 = new HashMap<String, Object>();
-		 * paramMap1.put("ce_end_date", candidateEducations.get(0).getQualEndDate());
-		 * 
-		 * Map<String, Object> paramMap2 = new HashMap<String, Object>();
-		 * paramMap2.put("ce_end_date", candidateEducations.get(1).getQualEndDate());
-		 * 
-		 * List<Map<String, Object>> batchValues = new ArrayList<Map<String, Object>>();
-		 * batchValues.add(paramMap1); batchValues.add(paramMap2);
-		 * 
-		 * 
-		 * namedParameterJdbcTemplate.batchUpdate(sql.toString(),
-		 * batchValues.toArray(new Map[batchValues.size()]));
-		 */
-
-		/*
-		 * Map<String, Object> paramMap = new HashMap<String, Object>();
-		 * candidateEducations.forEach(candidateEducation -> {
-		 * paramMap.put("ce_qualification_name", candidateEducation.getQualName());
-		 * paramMap.put("ce_end_date", candidateEducation.getQualEndDate());
-		 * paramMap.put("ce_score", candidateEducation.getScore());
-		 * paramMap.put("ce_score_type",candidateEducation.getScoreType());
-		 * paramMap.put("ce_institution", candidateEducation.getInstitution());
-		 * paramMap.put("ce_specialization", candidateEducation.getSpecialization());
-		 * 
-		 * namedParameterJdbcTemplate.update(sql.toString(), paramMap); });
-		 */
 
 		return true;
 	}
