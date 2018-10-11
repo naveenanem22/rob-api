@@ -29,7 +29,7 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 	@Override
 	public List<CandidateEducation> getCandidateEducaitonsByCandidateId(String candidateId) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT * FROM candidateeducaiton WHERE ce_cdt_id =:ce_cdt_id");
+		sql.append("SELECT * FROM candidateeducation WHERE ce_cdt_id =:ce_cdt_id");
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("ce_cdt_id", candidateId);
 		return namedParameterJdbcTemplate.query(sql.toString(), paramMap, new CandidateEducationRowMapper());
@@ -43,53 +43,48 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 		sql.append("ce_end_date = :ce_end_date, ce_score = :ce_score, ce_score_type = :ce_score_type, ");
 		sql.append("ce_institution = :ce_institution, ce_specialization = :ce_specialization ");
 		sql.append("WHERE ce_cdt_id = :ce_cdt_id && ce_start_date = :ce_start_date");
-		
+
 		List<Map<String, Object>> batchValues = new ArrayList<>(candidateEducations.size());
 		candidateEducations.forEach(candidateEducation -> {
-			batchValues.add(new MapSqlParameterSource("ce_end_date",candidateEducation.getQualEndDate())
+			batchValues.add(new MapSqlParameterSource("ce_end_date", candidateEducation.getQualEndDate())
 					.addValue("ce_qualification_name", candidateEducation.getQualName())
-					.addValue("ce_score",candidateEducation.getScore())
+					.addValue("ce_score", candidateEducation.getScore())
 					.addValue("ce_score_type", candidateEducation.getScoreType())
 					.addValue("ce_institution", candidateEducation.getInstitution())
 					.addValue("ce_specialization", candidateEducation.getSpecialization())
-					.addValue("ce_cdt_id", candidateId)
-					.addValue("ce_start_date", candidateEducation.getQualStartDate())
+					.addValue("ce_cdt_id", candidateId).addValue("ce_start_date", candidateEducation.getQualStartDate())
 					.getValues());
 		});
-		
-		namedParameterJdbcTemplate.batchUpdate(sql.toString(), batchValues.toArray(new Map[candidateEducations.size()]));
-		/*Map<String, Object> paramMap1 = new HashMap<String, Object>();
-		paramMap1.put("ce_end_date", candidateEducations.get(0).getQualEndDate());
-		
-		Map<String, Object> paramMap2 = new HashMap<String, Object>();
-		paramMap2.put("ce_end_date", candidateEducations.get(1).getQualEndDate());
-		
-		List<Map<String, Object>> batchValues = new ArrayList<Map<String, Object>>();
-		batchValues.add(paramMap1);
-		batchValues.add(paramMap2);
-		
-		
-		namedParameterJdbcTemplate.batchUpdate(sql.toString(), batchValues.toArray(new Map[batchValues.size()]));*/
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		/*Map<String, Object> paramMap = new HashMap<String, Object>();
-		candidateEducations.forEach(candidateEducation -> {
-			paramMap.put("ce_qualification_name", candidateEducation.getQualName());
-			paramMap.put("ce_end_date", candidateEducation.getQualEndDate());
-			paramMap.put("ce_score", candidateEducation.getScore());
-			paramMap.put("ce_score_type",candidateEducation.getScoreType());
-			paramMap.put("ce_institution", candidateEducation.getInstitution());
-			paramMap.put("ce_specialization", candidateEducation.getSpecialization());
-			
-			namedParameterJdbcTemplate.update(sql.toString(), paramMap);
-		});*/
+
+		namedParameterJdbcTemplate.batchUpdate(sql.toString(),
+				batchValues.toArray(new Map[candidateEducations.size()]));
+		/*
+		 * Map<String, Object> paramMap1 = new HashMap<String, Object>();
+		 * paramMap1.put("ce_end_date", candidateEducations.get(0).getQualEndDate());
+		 * 
+		 * Map<String, Object> paramMap2 = new HashMap<String, Object>();
+		 * paramMap2.put("ce_end_date", candidateEducations.get(1).getQualEndDate());
+		 * 
+		 * List<Map<String, Object>> batchValues = new ArrayList<Map<String, Object>>();
+		 * batchValues.add(paramMap1); batchValues.add(paramMap2);
+		 * 
+		 * 
+		 * namedParameterJdbcTemplate.batchUpdate(sql.toString(),
+		 * batchValues.toArray(new Map[batchValues.size()]));
+		 */
+
+		/*
+		 * Map<String, Object> paramMap = new HashMap<String, Object>();
+		 * candidateEducations.forEach(candidateEducation -> {
+		 * paramMap.put("ce_qualification_name", candidateEducation.getQualName());
+		 * paramMap.put("ce_end_date", candidateEducation.getQualEndDate());
+		 * paramMap.put("ce_score", candidateEducation.getScore());
+		 * paramMap.put("ce_score_type",candidateEducation.getScoreType());
+		 * paramMap.put("ce_institution", candidateEducation.getInstitution());
+		 * paramMap.put("ce_specialization", candidateEducation.getSpecialization());
+		 * 
+		 * namedParameterJdbcTemplate.update(sql.toString(), paramMap); });
+		 */
 
 		return true;
 	}
@@ -97,7 +92,7 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 	@Override
 	public boolean createCandidateEducations(String candidateId, List<CandidateEducation> candidateEducaitons) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("INSERT INTO candidateeducaiton ");
+		sql.append("INSERT INTO candidateeducation ");
 		sql.append("(ce_cdt_id, ce_qualification_name, ce_start_date, ce_end_date, ");
 		sql.append("ce_score, ce_score_type, ce_institution, ce_specialization) ");
 		sql.append("VALUES ");
@@ -113,16 +108,24 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 			paramMap.put("ce_score", candidateEducation.getScore());
 			paramMap.put("ce_institution", candidateEducation.getInstitution());
 			paramMap.put("ce_specialization", candidateEducation.getSpecialization());
-			
+			paramMap.put("ce_score_type", candidateEducation.getScoreType());
+
 			namedParameterJdbcTemplate.update(sql.toString(), paramMap);
 		});
 		return true;
 	}
 
 	@Override
-	public boolean removeCandidateEducations(String candidateId, LocalDate qualStartDate) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean removeCandidateEducationByStartDate(String candidateId, LocalDate qualStartDate) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("DELETE FROM candidateeducation ");
+		sql.append("WHERE ce_cdt_id =:ce_cdt_id && ce_start_date =:ce_start_date");
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("ce_cdt_id", candidateId);
+		paramMap.put("ce_start_date", qualStartDate);
+
+		return (namedParameterJdbcTemplate.update(sql.toString(), paramMap) == 1);
+
 	}
 
 	private final class CandidateEducationRowMapper implements RowMapper<CandidateEducation> {
@@ -139,6 +142,12 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 			candidateEducation.setSpecialization(rs.getString("ce_specialization"));
 			return candidateEducation;
 		}
+	}
+
+	@Override
+	public boolean removeCandidateEducations(String candidateId, LocalDate qualStartDate) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

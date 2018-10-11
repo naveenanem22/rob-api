@@ -11,8 +11,10 @@ public interface CandidateEducationDao {
 
 	boolean updateCandidateEducations(String candidateId, List<CandidateEducation> candidateEducations);
 
-	boolean createCandidateEducations(String candidateId, List<CandidateEducation> candidateEducaitons);
+	boolean createCandidateEducations(String candidateId, List<CandidateEducation> candidateEducations);
 
 	boolean removeCandidateEducations(String candidateId, LocalDate qualStartDate);
+
+	boolean removeCandidateEducationByStartDate(String candidateId, LocalDate qualStartDate);
 
 }

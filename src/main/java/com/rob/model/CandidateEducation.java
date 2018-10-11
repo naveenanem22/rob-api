@@ -2,9 +2,11 @@ package com.rob.model;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.rob.custom.validators.ScoreTypeConstraint;
 
 public class CandidateEducation {
 
@@ -13,6 +15,7 @@ public class CandidateEducation {
 	private String qualName;
 
 	@JsonProperty(value = "specialization")
+	@NotBlank(message = "Specialization cannot be blank.")
 	private String specialization;
 
 	@JsonProperty(value = "qualStartDate")
@@ -21,15 +24,16 @@ public class CandidateEducation {
 	@JsonProperty(value = "qualEndDate")
 	private LocalDate qualEndDate;
 
-	@JsonProperty(value = "score")
-
+	@JsonProperty(value = "score")	
 	private float score;
 
 	@JsonProperty(value = "scoreType")
-
+	@NotBlank(message = "Score-type cannot be blank.")
+	@ScoreTypeConstraint(message = "Score-type must be either GPA or Percentage.")
 	private String scoreType;
 
 	@JsonProperty(value = "institution")
+	@NotBlank(message = "Institution name cannot be blank.")
 	private String institution;
 
 	public CandidateEducation() {
