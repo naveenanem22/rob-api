@@ -11,11 +11,13 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.rob.custom.exceptions.RecordNotFoundException;
 import com.rob.model.CandidateEducation;
 
 @Repository(value = "candidateEducationDaoImpl")
@@ -39,10 +41,11 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 	@Override
 	public boolean updateCandidateEducations(String candidateId, List<CandidateEducation> candidateEducations) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("UPDATE candidateeducation SET ce_qualification_name =:ce_qualification_name, ");
+		sql.append("UPDATE candidateeducation SET ");
 		sql.append("ce_end_date = :ce_end_date, ce_score = :ce_score, ce_score_type = :ce_score_type, ");
 		sql.append("ce_institution = :ce_institution, ce_specialization = :ce_specialization ");
-		sql.append("WHERE ce_cdt_id = :ce_cdt_id && ce_start_date = :ce_start_date");
+		sql.append(
+				"WHERE ce_cdt_id = :ce_cdt_id && ce_start_date = :ce_start_date && ce_qualification_name =:ce_qualification_name");
 
 		List<Map<String, Object>> batchValues = new ArrayList<>(candidateEducations.size());
 		candidateEducations.forEach(candidateEducation -> {
@@ -91,28 +94,35 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 
 	@Override
 	public boolean createCandidateEducations(String candidateId, List<CandidateEducation> candidateEducaitons) {
-		StringBuilder sql = new StringBuilder();
-		sql.append("INSERT INTO candidateeducation ");
-		sql.append("(ce_cdt_id, ce_qualification_name, ce_start_date, ce_end_date, ");
-		sql.append("ce_score, ce_score_type, ce_institution, ce_specialization) ");
-		sql.append("VALUES ");
-		sql.append("(:ce_cdt_id, :ce_qualification_name, :ce_start_date, :ce_end_date, ");
-		sql.append(":ce_score, :ce_score_type, :ce_institution, :ce_specialization)");
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("INSERT INTO candidateeducation ");
+			sql.append("(ce_cdt_id, ce_qualification_name, ce_start_date, ce_end_date, ");
+			sql.append("ce_score, ce_score_type, ce_institution, ce_specialization) ");
+			sql.append("VALUES ");
+			sql.append("(:ce_cdt_id, :ce_qualification_name, :ce_start_date, :ce_end_date, ");
+			sql.append(":ce_score, :ce_score_type, :ce_institution, :ce_specialization)");
 
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		candidateEducaitons.forEach(candidateEducation -> {
-			paramMap.put("ce_cdt_id", candidateId);
-			paramMap.put("ce_qualification_name", candidateEducation.getQualName());
-			paramMap.put("ce_start_date", candidateEducation.getQualStartDate());
-			paramMap.put("ce_end_date", candidateEducation.getQualEndDate());
-			paramMap.put("ce_score", candidateEducation.getScore());
-			paramMap.put("ce_institution", candidateEducation.getInstitution());
-			paramMap.put("ce_specialization", candidateEducation.getSpecialization());
-			paramMap.put("ce_score_type", candidateEducation.getScoreType());
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			candidateEducaitons.forEach(candidateEducation -> {
+				paramMap.put("ce_cdt_id", candidateId);
+				paramMap.put("ce_qualification_name", candidateEducation.getQualName());
+				paramMap.put("ce_start_date", candidateEducation.getQualStartDate());
+				paramMap.put("ce_end_date", candidateEducation.getQualEndDate());
+				paramMap.put("ce_score", candidateEducation.getScore());
+				paramMap.put("ce_institution", candidateEducation.getInstitution());
+				paramMap.put("ce_specialization", candidateEducation.getSpecialization());
+				paramMap.put("ce_score_type", candidateEducation.getScoreType());
 
-			namedParameterJdbcTemplate.update(sql.toString(), paramMap);
-		});
-		return true;
+				namedParameterJdbcTemplate.update(sql.toString(), paramMap);
+			});
+			return true;
+		} catch (DataIntegrityViolationException ex) {
+			if (ex.getLocalizedMessage().contains("fk_ce_cdt_id_ref_cdt_id"))
+				throw new RecordNotFoundException("Candidate with id:" + candidateId + " was not found.");
+		}
+		return false;
+
 	}
 
 	@Override
