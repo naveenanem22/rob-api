@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.rob.custom.exceptions.InternalServerException;
 import com.rob.custom.exceptions.RecordNotFoundException;
 import com.rob.util.response.ApiError;
 import com.rob.util.response.ApiFieldError;
@@ -33,6 +34,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	private static final String VALIDATION_FAILURE = "Validation failed.";
 	private static final String RECORD_NOT_FOUND = "Record not found.";
 	private static final String FIELD_MISSING = "Field is missing.";
+	private static final String INTERNAL_SERVER_ERROR = "Internal server error.";
 
 	@ExceptionHandler(RecordNotFoundException.class)
 	public final ResponseEntity<Object> handleRecordNotFoundException(RecordNotFoundException ex, WebRequest request) {
@@ -40,6 +42,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		details.add(ex.getLocalizedMessage());
 		ApiError apiError = new ApiError(LocalDateTime.now(), RECORD_NOT_FOUND, details);
 		return new ResponseEntity<Object>(apiError, HttpStatus.NOT_FOUND);
+
+	}
+
+	@ExceptionHandler(InternalServerException.class)
+	public final ResponseEntity<Object> handleInternalServerException(InternalServerException ex, WebRequest request) {
+		List<String> details = new ArrayList<String>();
+		details.add(ex.getLocalizedMessage());
+		ApiError apiError = new ApiError(LocalDateTime.now(), INTERNAL_SERVER_ERROR, details);
+		return new ResponseEntity<Object>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
 
@@ -65,8 +76,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
 		ApiFieldError apiFieldError = new ApiFieldError();
 		List<ApiFieldError.Detail> details = ex.getConstraintViolations().stream().map(constraintViolation -> {
-			ApiFieldError.Detail detail = apiFieldError.new Detail(
-					constraintViolation.getInvalidValue().toString(), constraintViolation.getMessage(),
+			ApiFieldError.Detail detail = apiFieldError.new Detail(constraintViolation.getInvalidValue().toString(),
+					constraintViolation.getMessage(),
 					StreamSupport.stream(constraintViolation.getPropertyPath().spliterator(), false)
 							.map(Path.Node::getName).reduce((first, second) -> second)
 							.orElseGet(() -> constraintViolation.getPropertyPath().toString()));

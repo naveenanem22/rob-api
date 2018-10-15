@@ -10,11 +10,11 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.rob.custom.exceptions.InternalServerException;
 import com.rob.custom.exceptions.RecordNotFoundException;
 import com.rob.model.Candidate;
 
@@ -43,7 +43,7 @@ public class CandidateDaoImpl implements CandidateDao {
 			return candidates.get(0);
 		// if more than one candidate found or any other unintentional flow occurs
 		else
-			throw new RuntimeException();
+			throw new InternalServerException("Unexpected error occurred while fetching the Candidate details.");
 
 	}
 
