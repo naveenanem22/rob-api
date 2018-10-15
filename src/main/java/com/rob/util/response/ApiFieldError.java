@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rob.common.JsonDateSerializer;
 
-public class ApiErrorWithDetails {
+public class ApiFieldError {
 
 	@JsonProperty(value = "timestamp")
 	@JsonSerialize(using = JsonDateSerializer.class)
