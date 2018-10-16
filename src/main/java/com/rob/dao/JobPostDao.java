@@ -6,6 +6,6 @@ import com.rob.model.JobPost;
 
 public interface JobPostDao {
 	
-	List<JobPost> getJobPostsById(String jobPostId);
+	JobPost getJobPostById(String jobPostId);
 
 }

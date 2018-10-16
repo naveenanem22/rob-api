@@ -12,6 +12,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.pmt.model.Employee;
+import com.rob.custom.exceptions.InternalServerException;
+import com.rob.custom.exceptions.RecordNotFoundException;
 import com.rob.model.JobPost;
 
 @Repository(value = "jobPostDaoImpl")
@@ -20,20 +22,38 @@ public class JobPostDaoImpl implements JobPostDao {
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	public List<JobPost> getJobPostsById(String jobPostId) {
+	public JobPost getJobPostById(String jobPostId) {
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT jobpost.*, employee.emp_id, employee.emp_firstname, employee.emp_lastname ");
+			sql.append("FROM jobpost ");
+			sql.append("INNER JOIN ");
+			sql.append("employee ");
+			sql.append("ON jobpost.jp_hiring_manager_employee_id = employee.emp_id ");
+			sql.append("WHERE jobpost.jp_id =:jp_id");
 
-		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT jobpost.*, employee.emp_id, employee.emp_firstname, employee.emp_lastname ");
-		sql.append("FROM jobpost ");
-		sql.append("INNER JOIN ");
-		sql.append("employee ");
-		sql.append("ON jobpost.jp_hiring_manager_employee_id = employee.emp_id ");
-		sql.append("WHERE jobpost.jp_id =:jp_id");
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("jp_id", jobPostId);
+			List<JobPost> jobPosts = namedParameterJdbcTemplate.query(sql.toString(), paramMap, new JobPostRowMapper());
+			if (jobPosts.size() == 1)
+				return jobPosts.get(0);
+			else if (jobPosts.isEmpty())
+				throw new RecordNotFoundException("JobPost not found.");
+			else
+				throw new InternalServerException("Unexpected error occurred while fetching the Candidate details.");
+		} catch (Exception ex) {
+			throw new InternalServerException("Unexpected error occurred while fetching the Candidate details.");
+		}
 
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("jp_id", jobPostId);
-		return namedParameterJdbcTemplate.query(sql.toString(), paramMap, new JobPostRowMapper());
+	}
 
+	public boolean updateJobPostById(String jobPostId, JobPost jobPost) {
+		return false;
+
+	}
+
+	public boolean removeJobPostById(String jobPostId, JobPost jobPost) {
+		return false;
 	}
 
 	private static class JobPostRowMapper implements RowMapper<JobPost> {

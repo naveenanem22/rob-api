@@ -23,9 +23,9 @@ public class JobPostController {
 	private JobPostService jobPostService;
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<List<JobPost>> getJobPostsById(@PathVariable("id") String jobPostId) {
+	public ResponseEntity<JobPost> getJobPostsById(@PathVariable("id") String jobPostId) {
 
-		return new ResponseEntity<List<JobPost>>(jobPostService.getJobPostsById(jobPostId), HttpStatus.ACCEPTED);
+		return new ResponseEntity<JobPost>(jobPostService.getJobPostsById(jobPostId), HttpStatus.ACCEPTED);
 
 	}
 

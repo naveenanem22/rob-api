@@ -19,8 +19,8 @@ public class JobPostServiceImpl implements JobPostService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<JobPost> getJobPostsById(String jobPostId) {
-		return jobPostDao.getJobPostsById(jobPostId);
+	public JobPost getJobPostsById(String jobPostId) {
+		return jobPostDao.getJobPostById(jobPostId);
 	}
 
 }
