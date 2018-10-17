@@ -1,11 +1,16 @@
 package com.rob.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.pmt.model.Employee;
 import com.rob.common.EmployeeInJobPostSerializer;
+import com.rob.common.EmployeeInJobPostDeSerializer;
 
 public class JobPost {
+
+	@JsonProperty(value = "id")
+	private String id;
 
 	@JsonProperty(value = "jobPosition")
 	private String jobTitle;
@@ -21,6 +26,7 @@ public class JobPost {
 
 	@JsonProperty(value = "recruiter")
 	@JsonSerialize(using = EmployeeInJobPostSerializer.class)
+	@JsonDeserialize(using = EmployeeInJobPostDeSerializer.class)
 	private Employee hiringManager;
 
 	@JsonProperty(value = "department")
@@ -46,6 +52,14 @@ public class JobPost {
 
 	public JobPost() {
 
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getJobTitle() {
