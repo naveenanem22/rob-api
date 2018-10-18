@@ -24,4 +24,4 @@ Following Postman Collection and Swagger documentation provided with examples he
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-MIT © [Yourname]()
+MIT © [Naveen Anem]()
