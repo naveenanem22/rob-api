@@ -17,7 +17,7 @@ import com.rob.custom.validators.GenderConstraint;
 public class Candidate {
 
 	@JsonProperty(value = "id")
-	private String id;
+	private int id;
 
 	@JsonProperty(value = "firstName")
 	@Size(min = 1, message = "First Name should not be empty.")
@@ -71,11 +71,11 @@ public class Candidate {
 
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

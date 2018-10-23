@@ -39,7 +39,7 @@ public class CandidateController {
 
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Resource<Candidate> getCandidate(@PathVariable("id") String candidateId) {
+	public Resource<Candidate> getCandidate(@PathVariable("id") int candidateId) {
 		Candidate candidate = candidateService.getCandidateById(candidateId);
 		Resource<Candidate> resource = new Resource<Candidate>(candidate);
 		ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).listCandidates());
@@ -63,15 +63,15 @@ public class CandidateController {
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, path = "/{id}")
 	public ResponseEntity<Object> updateCandidate(@Valid @RequestBody Candidate candidate,
-			@PathVariable("id") String candidateId) {
+			@PathVariable("id") int candidateId) {
 		candidate.setId(candidateId);
 		candidateService.updateCandidate(candidate);
 
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@DeleteMapping(path = "/{id}")
-	public void deleteCandidate(@PathVariable("id") String candidateId) {
+	public void deleteCandidate(@PathVariable("id") int candidateId) {
 		candidateService.deleteCandidateById(candidateId);
 	}
 

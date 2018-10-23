@@ -27,7 +27,7 @@ public class CandidateDaoImpl implements CandidateDao {
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	@Override
-	public Candidate getCandidateById(String candidateId) {
+	public Candidate getCandidateById(int candidateId) {
 		LOGGER.debug("candidateId:" + candidateId);
 		String sql = "SELECT * FROM candidate WHERE cdt_id =:cdt_id";
 
@@ -107,7 +107,7 @@ public class CandidateDaoImpl implements CandidateDao {
 	}
 
 	@Override
-	public boolean deleteCandidateById(String candidateId) {
+	public boolean deleteCandidateById(int candidateId) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("DELETE FROM candidate WHERE cdt_id = :cdt_id");
 		Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -126,7 +126,7 @@ public class CandidateDaoImpl implements CandidateDao {
 			candidate.setEmail(rs.getString("cdt_email"));
 			candidate.setFirstName(rs.getString("cdt_first_name"));
 			candidate.setGender(rs.getString("cdt_gender"));
-			candidate.setId(rs.getString("cdt_id"));
+			candidate.setId(rs.getInt("cdt_id"));
 			candidate.setLastDesignation(rs.getString("cdt_last_designation"));
 			candidate.setLastName(rs.getString("cdt_last_name"));
 			candidate.setMaritalStatus(rs.getString("cdt_marital_status"));

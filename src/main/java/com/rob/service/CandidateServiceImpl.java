@@ -17,7 +17,7 @@ public class CandidateServiceImpl implements CandidateService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Candidate getCandidateById(String candidateId) {				
+	public Candidate getCandidateById(int candidateId) {				
 		return candidateDao.getCandidateById(candidateId);
 	}
 
@@ -35,7 +35,7 @@ public class CandidateServiceImpl implements CandidateService {
 	
 	@Override
 	@Transactional
-	public boolean deleteCandidateById(String candidateId) {
+	public boolean deleteCandidateById(int candidateId) {
 		return candidateDao.deleteCandidateById(candidateId);
 	}
 

@@ -4,9 +4,9 @@ import com.rob.model.Candidate;
 
 public interface CandidateService {
 	
-	Candidate getCandidateById(String candidateId);
+	Candidate getCandidateById(int candidateId);
 	boolean createCandidate(Candidate candidate);
 	boolean updateCandidate(Candidate candidate);
-	boolean deleteCandidateById(String candidateId);
+	boolean deleteCandidateById(int candidateId);
 
 }
