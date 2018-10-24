@@ -10,14 +10,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CandidatePrevEmployment {
 
+	@JsonProperty(value = "id")
+	private int id;
+
 	@JsonProperty(value = "companyName")
 	@NotBlank(message = "Company name cannot be blank.")
 	private String companyName;
 
-	@JsonProperty(value = "totalExperienceInMonths")	
+	@JsonProperty(value = "totalExperienceInMonths")
 	private int totalExperienceInMonths;
 
-	@JsonProperty(value = "relevantExperienceInMonths")	
+	@JsonProperty(value = "relevantExperienceInMonths")
 	private int relevantExperienceInMonths;
 
 	@JsonProperty(value = "startDate")
@@ -30,7 +33,7 @@ public class CandidatePrevEmployment {
 	@NotBlank(message = "Designation cannot be blank.")
 	private String designation;
 
-	@JsonProperty(value = "remuneration")	
+	@JsonProperty(value = "remuneration")
 	private BigDecimal remuneration;
 
 	@JsonProperty(value = "natureOfEmployment")
@@ -57,6 +60,18 @@ public class CandidatePrevEmployment {
 	@JsonProperty(value = "employeeCode")
 	@NotBlank(message = "Employee-Code cannot be blank.")
 	private String employeeCode;
+
+	public CandidatePrevEmployment() {
+
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public BigDecimal getRemuneration() {
 		return remuneration;

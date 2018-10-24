@@ -22,31 +22,27 @@ public class CandidatePrevEmploymentDaoImpl implements CandidatePrevEmploymentDa
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	public boolean removeCandidatePrevEmploymentRecordsByCompany(String candidateId,
-			List<CandidatePrevEmployment> candidatePrevEmployments) {
+	public boolean removePrevEmploymentRecords(int candidateId, List<Integer> candidatePrevEmploymentIds) {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("DELETE FROM candidateemploymenthistory ");
-		sql.append("WHERE ceh_cdt_id =:ceh_cdt_id && ceh_company_name =:ceh_company_name ");
-		sql.append("&& ceh_start_date =:ceh_start_date");
+		sql.append("WHERE ceh_cdt_id =:ceh_cdt_id && ceh_id =:ceh_id");
 
-		List<Map<String, Object>> batchValues = new ArrayList<>(candidatePrevEmployments.size());
-		candidatePrevEmployments.forEach(candidatePrevEmployment -> {
-			batchValues.add(new MapSqlParameterSource("ceh_total_experience_in_months",
-					candidatePrevEmployment.getTotalExperienceInMonths()).addValue("ceh_cdt_id", candidateId)
-							.addValue("ceh_company_name", candidatePrevEmployment.getCompanyName())
-							.addValue("ceh_start_date", candidatePrevEmployment.getStartDate()).getValues());
+		List<Map<String, Object>> batchValues = new ArrayList<>(candidatePrevEmploymentIds.size());
+		candidatePrevEmploymentIds.forEach(candidatePrevEmploymentId -> {
+			batchValues.add(new MapSqlParameterSource("ceh_id", candidatePrevEmploymentId.intValue())
+					.addValue("ceh_cdt_id", candidateId).getValues());
 
 		});
 
 		namedParameterJdbcTemplate.batchUpdate(sql.toString(),
-				batchValues.toArray(new Map[candidatePrevEmployments.size()]));
+				batchValues.toArray(new Map[candidatePrevEmploymentIds.size()]));
 
 		return true;
 
 	}
 
-	public List<CandidatePrevEmployment> listPrevEmploymentRecords(String candidateId) {
+	public List<CandidatePrevEmployment> listPrevEmploymentRecords(int candidateId) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT * FROM candidateemploymenthistory WHERE ceh_cdt_id =:ceh_cdt_id");
 		Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -55,7 +51,7 @@ public class CandidatePrevEmploymentDaoImpl implements CandidatePrevEmploymentDa
 
 	}
 
-	public boolean updatePrevEmploymentRecords(String candidateId,
+	public boolean updatePrevEmploymentRecords(int candidateId,
 			List<CandidatePrevEmployment> candidatePrevEmployments) {
 
 		StringBuilder sql = new StringBuilder();
@@ -70,9 +66,10 @@ public class CandidatePrevEmploymentDaoImpl implements CandidatePrevEmploymentDa
 		sql.append("ceh_employee_code =:ceh_employee_code, ");
 		sql.append("ceh_supervisor_designation =:ceh_supervisor_designation, ");
 		sql.append("ceh_supervisor_email =:ceh_supervisor_email, ");
-		sql.append("ceh_supervisor_name =:ceh_supervisor_name ");
-		sql.append("WHERE ceh_cdt_id =:ceh_cdt_id && ceh_company_name =:ceh_company_name ");
-		sql.append("&& ceh_start_date =:ceh_start_date");
+		sql.append("ceh_supervisor_name =:ceh_supervisor_name, ");
+		sql.append("ceh_company_name =:ceh_company_name, ");
+		sql.append("ceh_start_date =:ceh_start_date ");
+		sql.append("WHERE ceh_cdt_id =:ceh_cdt_id && ceh_id =:ceh_id");
 
 		List<Map<String, Object>> batchValues = new ArrayList<>(candidatePrevEmployments.size());
 		candidatePrevEmployments.forEach(candidatePrevEmployment -> {
@@ -91,6 +88,7 @@ public class CandidatePrevEmploymentDaoImpl implements CandidatePrevEmploymentDa
 							.addValue("ceh_supervisor_name", candidatePrevEmployment.getSupervisorName())
 							.addValue("ceh_cdt_id", candidateId)
 							.addValue("ceh_company_name", candidatePrevEmployment.getCompanyName())
+							.addValue("ceh_id", candidatePrevEmployment.getId())
 							.addValue("ceh_start_date", candidatePrevEmployment.getStartDate()).getValues());
 
 		});
@@ -102,12 +100,12 @@ public class CandidatePrevEmploymentDaoImpl implements CandidatePrevEmploymentDa
 
 	}
 
-	public boolean createPrevEmploymentRecords(String candidateId,
+	public boolean createPrevEmploymentRecords(int candidateId,
 			List<CandidatePrevEmployment> candidatePrevEmployments) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("INSERT INTO candidateemploymenthistory");
 		sql.append("(");
-		sql.append("ceh_cdt_id, ceh_company_name, ceh_total_experience_in_months, ");
+		sql.append("ceh_id, ceh_cdt_id, ceh_company_name, ceh_total_experience_in_months, ");
 		sql.append("ceh_start_date, ceh_end_date, ceh_relevant_experience_in_months, ");
 		sql.append("ceh_designation, ceh_remuneration, ceh_nature_of_employment, ");
 		sql.append("ceh_reason_for_leaving, ceh_employee_code, ceh_supervisor_designation, ");
@@ -115,7 +113,7 @@ public class CandidatePrevEmploymentDaoImpl implements CandidatePrevEmploymentDa
 		sql.append(") ");
 		sql.append("VALUES");
 		sql.append("(");
-		sql.append(":ceh_cdt_id, :ceh_company_name, :ceh_total_experience_in_months, ");
+		sql.append(":ceh_id, :ceh_cdt_id, :ceh_company_name, :ceh_total_experience_in_months, ");
 		sql.append(":ceh_start_date, :ceh_end_date, :ceh_relevant_experience_in_months, ");
 		sql.append(":ceh_designation, :ceh_remuneration, :ceh_nature_of_employment, ");
 		sql.append(":ceh_reason_for_leaving, :ceh_employee_code, :ceh_supervisor_designation, ");
@@ -139,6 +137,7 @@ public class CandidatePrevEmploymentDaoImpl implements CandidatePrevEmploymentDa
 							.addValue("ceh_supervisor_name", candidatePrevEmployment.getSupervisorName())
 							.addValue("ceh_cdt_id", candidateId)
 							.addValue("ceh_company_name", candidatePrevEmployment.getCompanyName())
+							.addValue("ceh_id", candidatePrevEmployment.getId())
 							.addValue("ceh_start_date", candidatePrevEmployment.getStartDate()).getValues());
 
 		});
@@ -154,6 +153,7 @@ public class CandidatePrevEmploymentDaoImpl implements CandidatePrevEmploymentDa
 		@Override
 		public CandidatePrevEmployment mapRow(ResultSet rs, int rowNum) throws SQLException {
 			CandidatePrevEmployment candidatePrevEmployment = new CandidatePrevEmployment();
+			candidatePrevEmployment.setId(rs.getInt("ceh_id"));
 			candidatePrevEmployment.setCompanyName(rs.getString("ceh_company_name"));
 			candidatePrevEmployment.setDesignation(rs.getString("ceh_designation"));
 			candidatePrevEmployment.setEmployeeCode(rs.getString("ceh_employee_code"));

@@ -33,7 +33,7 @@ public class CandidatePrevEmploymentController {
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<CandidatePrevEmployment>> listPrevEmployments(
-			@PathVariable("candidateId") String candidateId) {
+			@PathVariable("candidateId") int candidateId) {
 		List<CandidatePrevEmployment> candidatePrevEmployments = candidatePrevEmploymentService
 				.listPrevEmploymentRecords(candidateId);
 
@@ -42,7 +42,7 @@ public class CandidatePrevEmploymentController {
 	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> createPrevEmployments(@PathVariable("candidateId") String candidateId,
+	public ResponseEntity<Object> createPrevEmployments(@PathVariable("candidateId") int candidateId,
 			@Valid @RequestBody List<CandidatePrevEmployment> candidatePrevEmployments) {
 		candidatePrevEmploymentService.createPrevEmploymentRecords(candidateId, candidatePrevEmployments);
 		return ResponseEntity.noContent().build();
@@ -50,7 +50,7 @@ public class CandidatePrevEmploymentController {
 	}
 
 	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> updatePrevEmployments(@PathVariable("candidateId") String candidateId,
+	public ResponseEntity<Object> updatePrevEmployments(@PathVariable("candidateId") int candidateId,
 			@Valid @RequestBody List<CandidatePrevEmployment> candidatePrevEmployments) {
 
 		candidatePrevEmploymentService.updatePrevEmploymentRecords(candidateId, candidatePrevEmployments);
@@ -59,9 +59,9 @@ public class CandidatePrevEmploymentController {
 	}
 
 	@DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> removePrevEmployments(@PathVariable("candidateId") String candidateId,
-			@Valid @RequestBody List<CandidatePrevEmployment> candidatePrevEmployments) {
-		candidatePrevEmploymentService.removeCandidatePrevEmploymentRecordsByCompany(candidateId, candidatePrevEmployments);
+	public ResponseEntity<Object> removePrevEmployments(@PathVariable("candidateId") int candidateId,
+			@Valid @RequestBody List<Integer> candidatePrevEmploymentIds) {
+		candidatePrevEmploymentService.removePrevEmploymentRecords(candidateId, candidatePrevEmploymentIds);
 		return ResponseEntity.noContent().build();
 	}
 

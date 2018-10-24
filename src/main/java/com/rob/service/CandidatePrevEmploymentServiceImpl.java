@@ -1,6 +1,7 @@
 package com.rob.service;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,23 +20,21 @@ public class CandidatePrevEmploymentServiceImpl implements CandidatePrevEmployme
 
 	@Override
 	@Transactional
-	public boolean removeCandidatePrevEmploymentRecordsByCompany(String candidateId,
-			List<CandidatePrevEmployment> candidatePrevEmployments) {
-		return candidatePrevEmploymentDao.removeCandidatePrevEmploymentRecordsByCompany(candidateId,
-				candidatePrevEmployments);
+	public boolean removePrevEmploymentRecords(int candidateId, List<Integer> candidatePrevEmploymentIds) {
 
+		return candidatePrevEmploymentDao.removePrevEmploymentRecords(candidateId, candidatePrevEmploymentIds);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<CandidatePrevEmployment> listPrevEmploymentRecords(String candidateId) {
+	public List<CandidatePrevEmployment> listPrevEmploymentRecords(int candidateId) {
 
 		return candidatePrevEmploymentDao.listPrevEmploymentRecords(candidateId);
 	}
 
 	@Override
 	@Transactional
-	public boolean updatePrevEmploymentRecords(String candidateId,
+	public boolean updatePrevEmploymentRecords(int candidateId,
 			List<CandidatePrevEmployment> candidatePrevEmployments) {
 
 		return candidatePrevEmploymentDao.updatePrevEmploymentRecords(candidateId, candidatePrevEmployments);
@@ -43,9 +42,13 @@ public class CandidatePrevEmploymentServiceImpl implements CandidatePrevEmployme
 
 	@Override
 	@Transactional
-	public boolean createPrevEmploymentRecords(String candidateId,
+	public boolean createPrevEmploymentRecords(int candidateId,
 			List<CandidatePrevEmployment> candidatePrevEmployments) {
-		
+		Random random = new Random();
+		candidatePrevEmployments.forEach(candidatePrevEmployment -> {
+			candidatePrevEmployment.setId(random.nextInt((9999 - 1000) + 1) + 1000);
+		});
+
 		return candidatePrevEmploymentDao.createPrevEmploymentRecords(candidateId, candidatePrevEmployments);
 	}
 
