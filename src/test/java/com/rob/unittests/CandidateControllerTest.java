@@ -46,13 +46,13 @@ public class CandidateControllerTest {
 		candidate.setLastName("Anem");
 		candidate.setEmail("naveen.anem@kony.com");
 		candidate.setGender("Male");
-		candidate.setId("KH2475");
+		candidate.setId(2475);
 		candidate.setLastDesignation("Technical Lead");
 		candidate.setPassportNumber("J2940263");
 		candidate.setMaritalStatus("Married");
 		candidate.setDateOfBirth(LocalDate.of(1985, Month.AUGUST, 21));
 
-		Mockito.when(candidateService.getCandidateById(Mockito.anyString())).thenReturn(candidate);
+		Mockito.when(candidateService.getCandidateById(Mockito.anyInt())).thenReturn(candidate);
 
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/candidates/KH2475")
 				.accept(MediaType.APPLICATION_JSON);
