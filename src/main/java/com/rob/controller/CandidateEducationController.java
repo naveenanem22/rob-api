@@ -1,14 +1,11 @@
 package com.rob.controller;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -36,7 +33,7 @@ public class CandidateEducationController {
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void updateCandidateEducations(@Valid @RequestBody List<CandidateEducation> candidateEducations,
-			@PathVariable("id") String candidateId) {
+			@PathVariable("id") int candidateId) {
 
 		candidateEducationService.updateCandidateEducations(candidateId, candidateEducations);
 
@@ -44,23 +41,22 @@ public class CandidateEducationController {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> createCandidateEducations(
-			@Valid @RequestBody List<CandidateEducation> candidateEducations, @PathVariable("id") String candidateId) {
+			@Valid @RequestBody List<CandidateEducation> candidateEducations, @PathVariable("id") int candidateId) {
 
 		candidateEducationService.createCandidateEducations(candidateId, candidateEducations);
 		return ResponseEntity.noContent().build();
 
 	}
 
-	@DeleteMapping(path = "/{qualStartDate}")
-	public void deleteCandidateEducationByQualStartDate(@PathVariable("id") String candidateId,
-			@PathVariable("qualStartDate") String strQualStartDate) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate qualStartDate = LocalDate.parse(strQualStartDate, formatter);
-		candidateEducationService.removeCandidateEducationByStartDate(candidateId, qualStartDate);
+	@DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void deleteCandidateEducationByQualStartDate(@PathVariable("id") int candidateId,
+			@Valid @RequestBody List<Integer> candidateEducationIds) {
+
+		candidateEducationService.removeCandidateEducationsByCandidateId(candidateId, candidateEducationIds);
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<CandidateEducation> getCandidateEducations(@PathVariable("id") String candidateId) {
+	public List<CandidateEducation> getCandidateEducations(@PathVariable("id") int candidateId) {
 		return candidateEducationService.getCandidateEducaitonsByCandidateId(candidateId);
 	}
 

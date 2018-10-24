@@ -10,6 +10,9 @@ import com.rob.custom.validators.ScoreTypeConstraint;
 
 public class CandidateEducation {
 
+	@JsonProperty(value = "id")
+	private int id;
+
 	@JsonProperty(value = "qualificationName")
 	@Size(min = 1, message = "Qualificatoin Name cannot be blank.")
 	private String qualName;
@@ -24,7 +27,7 @@ public class CandidateEducation {
 	@JsonProperty(value = "qualEndDate")
 	private LocalDate qualEndDate;
 
-	@JsonProperty(value = "score")	
+	@JsonProperty(value = "score")
 	private float score;
 
 	@JsonProperty(value = "scoreType")
@@ -38,6 +41,14 @@ public class CandidateEducation {
 
 	public CandidateEducation() {
 
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getQualName() {

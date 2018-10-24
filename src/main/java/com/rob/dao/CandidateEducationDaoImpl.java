@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	@Override
-	public List<CandidateEducation> getCandidateEducaitonsByCandidateId(String candidateId) {
+	public List<CandidateEducation> getCandidateEducaitonsByCandidateId(int candidateId) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT * FROM candidateeducation WHERE ce_cdt_id =:ce_cdt_id");
 		Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -39,13 +40,13 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 	}
 
 	@Override
-	public boolean updateCandidateEducations(String candidateId, List<CandidateEducation> candidateEducations) {
+	public boolean updateCandidateEducations(int candidateId, List<CandidateEducation> candidateEducations) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("UPDATE candidateeducation SET ");
 		sql.append("ce_end_date = :ce_end_date, ce_score = :ce_score, ce_score_type = :ce_score_type, ");
-		sql.append("ce_institution = :ce_institution, ce_specialization = :ce_specialization ");
-		sql.append(
-				"WHERE ce_cdt_id = :ce_cdt_id && ce_start_date = :ce_start_date && ce_qualification_name =:ce_qualification_name");
+		sql.append("ce_institution = :ce_institution, ce_specialization = :ce_specialization, ");
+		sql.append("ce_start_date =:ce_start_date, ce_qualification_name =:ce_qualification_name ");
+		sql.append("WHERE ce_cdt_id = :ce_cdt_id && ce_id =:ce_id");
 
 		List<Map<String, Object>> batchValues = new ArrayList<>(candidateEducations.size());
 		candidateEducations.forEach(candidateEducation -> {
@@ -56,7 +57,7 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 					.addValue("ce_institution", candidateEducation.getInstitution())
 					.addValue("ce_specialization", candidateEducation.getSpecialization())
 					.addValue("ce_cdt_id", candidateId).addValue("ce_start_date", candidateEducation.getQualStartDate())
-					.getValues());
+					.addValue("ce_id", candidateEducation.getId()).getValues());
 		});
 
 		namedParameterJdbcTemplate.batchUpdate(sql.toString(),
@@ -66,19 +67,20 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 	}
 
 	@Override
-	public boolean createCandidateEducations(String candidateId, List<CandidateEducation> candidateEducaitons) {
+	public boolean createCandidateEducations(int candidateId, List<CandidateEducation> candidateEducaitons) {
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append("INSERT INTO candidateeducation ");
-			sql.append("(ce_cdt_id, ce_qualification_name, ce_start_date, ce_end_date, ");
+			sql.append("(ce_id, ce_cdt_id, ce_qualification_name, ce_start_date, ce_end_date, ");
 			sql.append("ce_score, ce_score_type, ce_institution, ce_specialization) ");
 			sql.append("VALUES ");
-			sql.append("(:ce_cdt_id, :ce_qualification_name, :ce_start_date, :ce_end_date, ");
+			sql.append("(:ce_id, :ce_cdt_id, :ce_qualification_name, :ce_start_date, :ce_end_date, ");
 			sql.append(":ce_score, :ce_score_type, :ce_institution, :ce_specialization)");
 
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			candidateEducaitons.forEach(candidateEducation -> {
 				paramMap.put("ce_cdt_id", candidateId);
+				paramMap.put("ce_id", candidateEducation.getId());
 				paramMap.put("ce_qualification_name", candidateEducation.getQualName());
 				paramMap.put("ce_start_date", candidateEducation.getQualStartDate());
 				paramMap.put("ce_end_date", candidateEducation.getQualEndDate());
@@ -99,15 +101,21 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 	}
 
 	@Override
-	public boolean removeCandidateEducationByStartDate(String candidateId, LocalDate qualStartDate) {
+	public boolean removeCandidateEducationsByCandidateId(int candidateId, List<Integer> candidateEducationIds) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("DELETE FROM candidateeducation ");
-		sql.append("WHERE ce_cdt_id =:ce_cdt_id && ce_start_date =:ce_start_date");
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("ce_cdt_id", candidateId);
-		paramMap.put("ce_start_date", qualStartDate);
+		sql.append("WHERE ce_cdt_id =:ce_cdt_id && ce_id =:ce_id");
+		List<Map<String, Object>> batchValues = new ArrayList<>(candidateEducationIds.size());
+		candidateEducationIds.forEach(candidateEducationId -> {
+			batchValues.add(new MapSqlParameterSource("ce_id", candidateEducationId.intValue())
+					.addValue("ce_cdt_id", candidateId)
+					.getValues());
+		});
 
-		return (namedParameterJdbcTemplate.update(sql.toString(), paramMap) == 1);
+		namedParameterJdbcTemplate.batchUpdate(sql.toString(),
+				batchValues.toArray(new Map[candidateEducationIds.size()]));
+		
+		return true;
 
 	}
 
@@ -116,6 +124,7 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 		@Override
 		public CandidateEducation mapRow(ResultSet rs, int rowNum) throws SQLException {
 			CandidateEducation candidateEducation = new CandidateEducation();
+			candidateEducation.setId(rs.getInt("ce_id"));
 			candidateEducation.setInstitution(rs.getString("ce_institution"));
 			candidateEducation.setQualEndDate(rs.getDate("ce_end_date").toLocalDate());
 			candidateEducation.setQualName(rs.getString("ce_qualification_name"));
@@ -125,12 +134,6 @@ public class CandidateEducationDaoImpl implements CandidateEducationDao {
 			candidateEducation.setSpecialization(rs.getString("ce_specialization"));
 			return candidateEducation;
 		}
-	}
-
-	@Override
-	public boolean removeCandidateEducations(String candidateId, LocalDate qualStartDate) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

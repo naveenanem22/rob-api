@@ -2,19 +2,18 @@ package com.rob.dao;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import com.rob.model.CandidateEducation;
 
 public interface CandidateEducationDao {
 
-	List<CandidateEducation> getCandidateEducaitonsByCandidateId(String candidateId);
+	List<CandidateEducation> getCandidateEducaitonsByCandidateId(int candidateId);
 
-	boolean updateCandidateEducations(String candidateId, List<CandidateEducation> candidateEducations);
+	boolean updateCandidateEducations(int candidateId, List<CandidateEducation> candidateEducations);
 
-	boolean createCandidateEducations(String candidateId, List<CandidateEducation> candidateEducations);
+	boolean createCandidateEducations(int candidateId, List<CandidateEducation> candidateEducations);
 
-	boolean removeCandidateEducations(String candidateId, LocalDate qualStartDate);
-
-	boolean removeCandidateEducationByStartDate(String candidateId, LocalDate qualStartDate);
+	boolean removeCandidateEducationsByCandidateId(int candidateId, List<Integer> candidateEducationIds);
 
 }
