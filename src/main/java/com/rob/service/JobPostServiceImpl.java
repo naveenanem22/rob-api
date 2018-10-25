@@ -1,5 +1,7 @@
 package com.rob.service;
 
+import java.util.Random;
+
 import javax.ws.rs.InternalServerErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +21,18 @@ public class JobPostServiceImpl implements JobPostService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public JobPost getJobPostsById(String jobPostId) {
+	public JobPost getJobPostsById(int jobPostId) {
 		return jobPostDao.getJobPostById(jobPostId);
 	}
 
 	@Override
 	@Transactional
-	public String createJobPost(JobPost jobPost) {
-		String jobPostId = "";
+	public int createJobPost(JobPost jobPost) {
+		int jobPostId = 0;
+		
+		Random random = new Random();
+		jobPost.setId(random.nextInt((9999 - 1000) + 1) + 1000);
+		
 
 		try {
 			if (jobPostDao.createJobPost(jobPost))
@@ -38,7 +44,7 @@ public class JobPostServiceImpl implements JobPostService {
 
 		}
 
-		if (!jobPostId.isEmpty())
+		if (jobPostId != 0)
 			return jobPostId;
 		else
 			throw new InternalServerErrorException("Unexpected error occurred while creating the JobPost details.");
@@ -46,7 +52,7 @@ public class JobPostServiceImpl implements JobPostService {
 	}
 
 	@Override
-	public boolean removeJobPostById(String jobPostId) {
+	public boolean removeJobPostById(int jobPostId) {
 
 		return jobPostDao.removeJobPostById(jobPostId);
 	}

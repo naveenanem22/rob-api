@@ -31,28 +31,28 @@ public class JobPostController {
 	private JobPostService jobPostService;
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<JobPost> getJobPostsById(@PathVariable("id") String jobPostId) {
+	public ResponseEntity<JobPost> getJobPostsById(@PathVariable("id") int jobPostId) {
 
 		return new ResponseEntity<JobPost>(jobPostService.getJobPostsById(jobPostId), HttpStatus.ACCEPTED);
 
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Map<String, String>> createJobPost(@Valid @RequestBody JobPost jobPost) {
-		Map<String, String> result = new HashMap<String, String>();
-		result.put("jobPostId", jobPostService.createJobPost(jobPost));
+	public ResponseEntity<Map<String, Integer>> createJobPost(@Valid @RequestBody JobPost jobPost) {
+		Map<String, Integer> result = new HashMap<String, Integer>();
+		result.put("jobPostId", Integer.valueOf(jobPostService.createJobPost(jobPost)));
 
-		return new ResponseEntity<Map<String, String>>(result, HttpStatus.OK);
+		return new ResponseEntity<Map<String, Integer>>(result, HttpStatus.OK);
 	}
 
 	@DeleteMapping(path = "/{id}")
-	public ResponseEntity<Object> removeJobPost(@PathVariable("id") String jobPostId) {
+	public ResponseEntity<Object> removeJobPost(@PathVariable("id") int jobPostId) {
 		jobPostService.removeJobPostById(jobPostId);
 		return ResponseEntity.noContent().build();
 	}
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "/{id}")
-	public ResponseEntity<Object> updateJobPost(@PathVariable("id") String jobPostId,
+	public ResponseEntity<Object> updateJobPost(@PathVariable("id") int jobPostId,
 			@Valid @RequestBody JobPost jobPost) {
 		jobPost.setId(jobPostId);
 		jobPostService.updateJobPost(jobPost);

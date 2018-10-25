@@ -6,9 +6,9 @@ import com.rob.model.JobPost;
 
 public interface JobPostService {
 	
-	JobPost getJobPostsById(String jobPostId);
-	String createJobPost(JobPost jobPost);
-	boolean removeJobPostById(String jobPostId);
+	JobPost getJobPostsById(int jobPostId);
+	int createJobPost(JobPost jobPost);
+	boolean removeJobPostById(int jobPostId);
 	boolean updateJobPost(JobPost jobPost);
 
 }

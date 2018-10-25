@@ -6,11 +6,11 @@ import com.rob.model.JobPost;
 
 public interface JobPostDao {
 
-	JobPost getJobPostById(String jobPostId);
+	JobPost getJobPostById(int jobPostId);
 
 	boolean createJobPost(JobPost jobPost);
 	
-	boolean removeJobPostById(String jobPostId);
+	boolean removeJobPostById(int jobPostId);
 	
 	boolean updateJobPost(JobPost jobPost);
 

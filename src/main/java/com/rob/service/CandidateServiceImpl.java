@@ -1,5 +1,7 @@
 package com.rob.service;
 
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ public class CandidateServiceImpl implements CandidateService {
 	@Override
 	@Transactional
 	public boolean createCandidate(Candidate candidate) {
+		Random random = new Random();		
+		candidate.setId(random.nextInt((9999-1000)+1)+1000);
 		return candidateDao.createCandidate(candidate);		
 	}
 	

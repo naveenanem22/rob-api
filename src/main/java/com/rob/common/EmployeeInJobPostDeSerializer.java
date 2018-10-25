@@ -19,7 +19,7 @@ public class EmployeeInJobPostDeSerializer extends JsonDeserializer<Employee> {
 		TreeNode treeNode = jp.getCodec().readTree(jp);
 		TextNode employeeId = (TextNode) treeNode.get("employeeId");
 		Employee employee = new Employee();
-		employee.setId(employeeId.asText());
+		employee.setId(employeeId.asInt());
 		return employee;
 	}
 

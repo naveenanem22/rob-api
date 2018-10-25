@@ -23,7 +23,7 @@ public class JobPostDaoImpl implements JobPostDao {
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	public JobPost getJobPostById(String jobPostId) {
+	public JobPost getJobPostById(int jobPostId) {
 		List<JobPost> jobPosts;
 		try {
 			StringBuilder sql = new StringBuilder();
@@ -99,7 +99,7 @@ public class JobPostDaoImpl implements JobPostDao {
 
 	}
 
-	public boolean removeJobPostById(String jobPostId) {
+	public boolean removeJobPostById(int jobPostId) {
 		int numberOfRowsAffected;
 		try {
 			StringBuilder sql = new StringBuilder();
@@ -174,7 +174,7 @@ public class JobPostDaoImpl implements JobPostDao {
 		@Override
 		public JobPost mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Employee hiringManager = new Employee();
-			hiringManager.setId(rs.getString("emp_id"));
+			hiringManager.setId(rs.getInt("emp_id"));
 			hiringManager.setFirstName(rs.getString("emp_firstname"));
 			hiringManager.setLastName(rs.getString("emp_lastname"));
 
@@ -191,7 +191,7 @@ public class JobPostDaoImpl implements JobPostDao {
 			jobPost.setNumberOfVacancies(rs.getInt("jp_number_of_vacancies"));
 			jobPost.setResponsibilities(rs.getString("jp_responsibilities"));
 			jobPost.setRoles(rs.getString("jp_roles"));
-			jobPost.setId(rs.getString("jp_id"));
+			jobPost.setId(rs.getInt("jp_id"));
 
 			return jobPost;
 		}

@@ -14,7 +14,7 @@ public class EmployeeInJobPostSerializer extends JsonSerializer<Employee>{
 		gen.writeStartObject();
 		gen.writeStringField("firstName", employee.getFirstName());
 		gen.writeStringField("lastName", employee.getLastName());
-		gen.writeStringField("employeeId", employee.getId());
+		gen.writeNumberField("employeeId", employee.getId());
 		gen.writeEndObject();
 		
 	}
