@@ -3,6 +3,7 @@ package com.rob.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,8 +52,8 @@ public class CandidateDaoImpl implements CandidateDao {
 	public boolean createCandidate(Candidate candidate) {
 
 		// Creating auditing information for candidate
-		candidate.setCreatedDate(LocalDateTime.now());
-		candidate.setUpdatedDate(LocalDateTime.now());
+		candidate.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
+		candidate.setUpdatedDate(LocalDateTime.now(ZoneOffset.UTC));
 
 		LOGGER.debug("Candidate: " + candidate.toString());
 
@@ -82,7 +83,7 @@ public class CandidateDaoImpl implements CandidateDao {
 	@Override
 	public boolean updateCandidate(Candidate candidate) {
 		// Creating auditing information for candidate
-		candidate.setUpdatedDate(LocalDateTime.now());
+		candidate.setUpdatedDate(LocalDateTime.now(ZoneOffset.UTC));
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("UPDATE candidate ");
@@ -121,6 +122,7 @@ public class CandidateDaoImpl implements CandidateDao {
 		@Override
 		public Candidate mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Candidate candidate = new Candidate();
+			System.out.println(rs.getString("cdt_created_date"));
 			candidate.setCreatedDate(rs.getTimestamp("cdt_created_date").toLocalDateTime());
 			candidate.setDateOfBirth(rs.getDate("cdt_date_of_birth").toLocalDate());
 			candidate.setEmail(rs.getString("cdt_email"));
