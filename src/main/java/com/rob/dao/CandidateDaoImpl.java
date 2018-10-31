@@ -121,8 +121,7 @@ public class CandidateDaoImpl implements CandidateDao {
 
 		@Override
 		public Candidate mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Candidate candidate = new Candidate();
-			System.out.println(rs.getString("cdt_created_date"));
+			Candidate candidate = new Candidate();			
 			candidate.setCreatedDate(rs.getTimestamp("cdt_created_date").toLocalDateTime());
 			candidate.setDateOfBirth(rs.getDate("cdt_date_of_birth").toLocalDate());
 			candidate.setEmail(rs.getString("cdt_email"));
