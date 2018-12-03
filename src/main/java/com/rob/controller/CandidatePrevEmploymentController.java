@@ -23,7 +23,7 @@ import com.rob.model.CandidatePrevEmployment;
 import com.rob.service.CandidatePrevEmploymentService;
 
 @RestController(value = "candidatePrevEmploymentController")
-@RequestMapping(path = "/candidates/{candidateId}/prevemployments")
+@RequestMapping(path = "/v0/candidate-management/candidates/{candidateId}/prevemployments")
 @Validated
 public class CandidatePrevEmploymentController {
 

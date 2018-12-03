@@ -23,7 +23,7 @@ import com.rob.model.JobCandidate;
 import com.rob.service.JobCandidateService;
 
 @RestController(value = "jobCandidateController")
-@RequestMapping(path = "/jobcandidatelist")
+@RequestMapping(path = "/v0/jobcandidatelist")
 @Validated
 public class JobCandidateController {
 

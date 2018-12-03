@@ -18,7 +18,7 @@ import com.rob.model.Interview;
 import com.rob.service.InterviewService;
 
 @RestController(value = "interviewController")
-@RequestMapping(path = "/interviews")
+@RequestMapping(path = "/v0/interviews")
 public class InterviewController {
 
 	@Autowired

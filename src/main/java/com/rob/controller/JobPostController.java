@@ -23,7 +23,7 @@ import com.rob.model.JobPost;
 import com.rob.service.JobPostService;
 
 @RestController(value = "jobPostController")
-@RequestMapping(path = "/jobposts")
+@RequestMapping(path = "/v0/jobposts")
 public class JobPostController {
 
 	@Autowired

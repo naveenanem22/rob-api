@@ -30,7 +30,7 @@ import com.rob.model.Candidate;
 import com.rob.service.CandidateService;
 
 @RestController(value = "candidateController")
-@RequestMapping("/candidates")
+@RequestMapping("/v0/candidate-management/candidates")
 public class CandidateController {
 
 	@Autowired

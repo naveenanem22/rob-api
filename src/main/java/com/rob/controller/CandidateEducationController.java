@@ -22,7 +22,7 @@ import com.rob.model.CandidateEducation;
 import com.rob.service.CandidateEducationService;
 
 @RestController(value = "candidateEducationController")
-@RequestMapping("/candidates/{id}/qualifications")
+@RequestMapping("/v0/candidate-management/candidates/{id}/qualifications")
 
 @Validated
 public class CandidateEducationController {
