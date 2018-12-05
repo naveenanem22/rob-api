@@ -15,8 +15,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.pc.customexceptions.InternalServerException;
-import com.pc.customexceptions.RecordNotFoundException;
+import com.pc.custom.exceptions.InternalServerException;
+import com.pc.custom.exceptions.RecordNotFoundException;
 import com.rob.model.Candidate;
 
 @Repository(value = "candidateDaoImpl")
