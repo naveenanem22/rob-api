@@ -10,9 +10,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.rob.common.JsonDateDeserializer;
-import com.rob.common.JsonDateSerializer;
-import com.rob.custom.validators.GenderConstraint;
+import com.pc.custom.validators.GenderConstraint;
+import com.pc.deserializers.JsonDateDeserializer;
+import com.pc.serializers.JsonDateSerializer;
 
 public class Candidate {
 

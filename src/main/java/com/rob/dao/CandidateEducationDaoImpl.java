@@ -18,7 +18,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.rob.custom.exceptions.RecordNotFoundException;
+import com.pc.custom.exceptions.RecordNotFoundException;
 import com.rob.model.CandidateEducation;
 
 @Repository(value = "candidateEducationDaoImpl")

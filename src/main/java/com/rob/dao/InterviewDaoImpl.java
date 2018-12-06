@@ -14,8 +14,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.rob.custom.exceptions.InternalServerException;
-import com.rob.custom.exceptions.RecordNotFoundException;
+import com.pc.custom.exceptions.InternalServerException;
+import com.pc.custom.exceptions.RecordNotFoundException;
 import com.rob.model.Interview;
 import com.rob.model.JobCandidate;
 

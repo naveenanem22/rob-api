@@ -7,7 +7,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = { "com.rob.*" })
+@SpringBootApplication(scanBasePackages = { "com.rob.*", "com.pc.*" })
 public class Application {
 	@PostConstruct
 	public void init() {

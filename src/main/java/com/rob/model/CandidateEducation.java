@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.rob.custom.validators.ScoreTypeConstraint;
+import com.pc.custom.validators.ScoreTypeConstraint;
 
 public class CandidateEducation {
 
